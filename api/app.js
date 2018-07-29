@@ -6,9 +6,12 @@ var logger = require('morgan');
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
+var express_graphql = require('express-graphql');
+
+var schema=require('./src/schema')
+var root=require('./src/root')
 
 var app = express();
-console.log(process.env.DATABASE_URL);
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
@@ -19,8 +22,12 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/', indexRouter);
-app.use('/users', usersRouter);
+app.use('/', express_graphql({
+    schema: schema,
+    rootValue: root,
+    graphiql: true
+}));
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

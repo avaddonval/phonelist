@@ -10,8 +10,13 @@ services:
         - "3000:3000"
       depends_on:
         - dbpostgres
+      links:
+        - "dbpostgres"
       environment:
-        DATABASE_URL: postgres://phonelist@dbpostgres/phonelist
+        DB_PORT: 5432
+        DB_USER: phonelist
+        DB_PASSWORD: ASD12asd
+        DATABASE: phonelist
   dbpostgres:
     image: postgres
     restart: always

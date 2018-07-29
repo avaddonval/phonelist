@@ -34,7 +34,7 @@ SET default_tablespace = '';
 SET default_with_oids = false;
 
 --
--- Name: contacts; Type: TABLE; Schema: public; Owner: root
+-- Name: contacts; Type: TABLE; Schema: public; Owner: phonelist
 --
 
 CREATE TABLE public.contacts (
@@ -43,10 +43,10 @@ CREATE TABLE public.contacts (
 );
 
 
-ALTER TABLE public.contacts OWNER TO root;
+ALTER TABLE public.contacts OWNER TO phonelist;
 
 --
--- Name: contacts_id_seq; Type: SEQUENCE; Schema: public; Owner: root
+-- Name: contacts_id_seq; Type: SEQUENCE; Schema: public; Owner: phonelist
 --
 
 CREATE SEQUENCE public.contacts_id_seq
@@ -58,17 +58,17 @@ CREATE SEQUENCE public.contacts_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.contacts_id_seq OWNER TO root;
+ALTER TABLE public.contacts_id_seq OWNER TO phonelist;
 
 --
--- Name: contacts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: root
+-- Name: contacts_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: phonelist
 --
 
 ALTER SEQUENCE public.contacts_id_seq OWNED BY public.contacts.id;
 
 
 --
--- Name: phones; Type: TABLE; Schema: public; Owner: root
+-- Name: phones; Type: TABLE; Schema: public; Owner: phonelist
 --
 
 CREATE TABLE public.phones (
@@ -78,10 +78,10 @@ CREATE TABLE public.phones (
 );
 
 
-ALTER TABLE public.phones OWNER TO root;
+ALTER TABLE public.phones OWNER TO phonelist;
 
 --
--- Name: phones_id_seq; Type: SEQUENCE; Schema: public; Owner: root
+-- Name: phones_id_seq; Type: SEQUENCE; Schema: public; Owner: phonelist
 --
 
 CREATE SEQUENCE public.phones_id_seq
@@ -93,31 +93,31 @@ CREATE SEQUENCE public.phones_id_seq
     CACHE 1;
 
 
-ALTER TABLE public.phones_id_seq OWNER TO root;
+ALTER TABLE public.phones_id_seq OWNER TO phonelist;
 
 --
--- Name: phones_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: root
+-- Name: phones_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: phonelist
 --
 
 ALTER SEQUENCE public.phones_id_seq OWNED BY public.phones.id;
 
 
 --
--- Name: contacts id; Type: DEFAULT; Schema: public; Owner: root
+-- Name: contacts id; Type: DEFAULT; Schema: public; Owner: phonelist
 --
 
 ALTER TABLE ONLY public.contacts ALTER COLUMN id SET DEFAULT nextval('public.contacts_id_seq'::regclass);
 
 
 --
--- Name: phones id; Type: DEFAULT; Schema: public; Owner: root
+-- Name: phones id; Type: DEFAULT; Schema: public; Owner: phonelist
 --
 
 ALTER TABLE ONLY public.phones ALTER COLUMN id SET DEFAULT nextval('public.phones_id_seq'::regclass);
 
 
 --
--- Data for Name: contacts; Type: TABLE DATA; Schema: public; Owner: root
+-- Data for Name: contacts; Type: TABLE DATA; Schema: public; Owner: phonelist
 --
 
 COPY public.contacts (id, name) FROM stdin;
@@ -125,30 +125,32 @@ COPY public.contacts (id, name) FROM stdin;
 
 
 --
--- Data for Name: phones; Type: TABLE DATA; Schema: public; Owner: root
+-- Data for Name: phones; Type: TABLE DATA; Schema: public; Owner: phonelist
 --
 
 COPY public.phones (id, phone, contact_id) FROM stdin;
 1	+77474159500	\N
+34	+77086358129	\N
+35	+77086358115	\N
 \.
 
 
 --
--- Name: contacts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: root
+-- Name: contacts_id_seq; Type: SEQUENCE SET; Schema: public; Owner: phonelist
 --
 
 SELECT pg_catalog.setval('public.contacts_id_seq', 1, false);
 
 
 --
--- Name: phones_id_seq; Type: SEQUENCE SET; Schema: public; Owner: root
+-- Name: phones_id_seq; Type: SEQUENCE SET; Schema: public; Owner: phonelist
 --
 
-SELECT pg_catalog.setval('public.phones_id_seq', 1, true);
+SELECT pg_catalog.setval('public.phones_id_seq', 35, true);
 
 
 --
--- Name: contacts contacts_pkey; Type: CONSTRAINT; Schema: public; Owner: root
+-- Name: contacts contacts_pkey; Type: CONSTRAINT; Schema: public; Owner: phonelist
 --
 
 ALTER TABLE ONLY public.contacts
@@ -156,7 +158,7 @@ ALTER TABLE ONLY public.contacts
 
 
 --
--- Name: phones phones_pkey; Type: CONSTRAINT; Schema: public; Owner: root
+-- Name: phones phones_pkey; Type: CONSTRAINT; Schema: public; Owner: phonelist
 --
 
 ALTER TABLE ONLY public.phones
@@ -164,7 +166,7 @@ ALTER TABLE ONLY public.phones
 
 
 --
--- Name: phones phones_contact_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: root
+-- Name: phones phones_contact_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: phonelist
 --
 
 ALTER TABLE ONLY public.phones
