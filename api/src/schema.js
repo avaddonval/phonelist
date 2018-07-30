@@ -54,7 +54,16 @@ var schema = new GraphQLSchema({
                 resolve(parent,args) {
                     return actions.getPhone(args)
                 }
-            }
+            },
+            searchContacts: {
+                type: new GraphQLList(Contact),
+                args:{
+                    search: { type:GraphQLString }
+                },
+                resolve(parent,args) {
+                    return actions.searchContacts(args)
+                }
+            },
         }
     }),
     mutation: new GraphQLObjectType({
@@ -63,20 +72,49 @@ var schema = new GraphQLSchema({
             createPhone: {
                 type: Phone,
                 args:{
-                    phone: { type: GraphQLNonNull(GraphQLString) }
+                    contact_id: { type: GraphQLNonNull(GraphQLInt) },
+                    phone: { type: GraphQLNonNull(GraphQLString) },
                 },
                 resolve(parent,args) {
                     return actions.createPhone(args)
                 }
             },
-            createContact: {
-                type: Contact,
+            editPhone: {
+                type: Phone,
                 args:{
-                    name: { type: GraphQLNonNull(GraphQLString) },
-                    phones: { type: new GraphQLList(GraphQLString) }
+                    id: { type: GraphQLNonNull(GraphQLInt) },
+                    phone: { type: GraphQLNonNull(GraphQLString) }
                 },
                 resolve(parent,args) {
-                    return actions.createContact(args)
+                    return actions.editPhone(args)
+                }
+            },
+            editContact: {
+                type: Contact,
+                args:{
+                    id: { type: GraphQLNonNull(GraphQLInt) },
+                    name: { type: new GraphQLNonNull(GraphQLString) }
+                },
+                resolve(parent,args) {
+                    return actions.editContact(args)
+                }
+            },
+            deletePhone: {
+                type: GraphQLString,
+                args:{
+                    id: { type: GraphQLNonNull(GraphQLInt) },
+                },
+                resolve(parent,args) {
+                    return actions.deletePhone(args)
+                }
+            },
+            deleteContact: {
+                type: GraphQLString,
+                args:{
+                    id: { type: GraphQLNonNull(GraphQLInt) },
+                },
+                resolve(parent,args) {
+                    return actions.deleteContact(args)
                 }
             }
         }

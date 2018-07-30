@@ -1,8 +1,8 @@
-var db = require('./db')
+let db = require('./db')
 
 async function getPhones(args) {
     console.log(args);
-    var data = []
+    let data = []
     if (args.contact) {
         data = await db.many('SELECT * FROM phones WHERE contact_id=$1', [args.contact])
             .then(data => {
@@ -22,9 +22,9 @@ async function getPhones(args) {
     return data
 }
 async function getPhone(args) {
-    var id = args.id;
+    let id = args.id;
 
-    var data = await db.one('SELECT * FROM phones WHERE id=$1', [id]).then(data => {
+    let data = await db.one('SELECT * FROM phones WHERE id=$1', [id]).then(data => {
         console.log("data", data);
         return data
     })
@@ -32,16 +32,16 @@ async function getPhone(args) {
 }
 
 async function getContacts(args) {
-    var data = await db.many('SELECT * FROM contacts').then(data => {
+    let data = await db.many('SELECT * FROM contacts').then(data => {
         console.log("data", data);
         return data
     })
     return data
 }
 async function getContact(args) {
-    var id = args.id;
+    let id = args.id;
 
-    var data = await db.one('SELECT * FROM contacts WHERE id=$1', [id]).then(data => {
+    let data = await db.one('SELECT * FROM contacts WHERE id=$1', [id]).then(data => {
         console.log("data", data);
         return data
     })
@@ -49,7 +49,7 @@ async function getContact(args) {
 }
 
 async function createPhone(args) {
-    let data = await db.one('INSERT INTO phones(phone) VALUES($1) RETURNING id,phone,contact_id', [args.phone])
+    let data = await db.one('INSERT INTO phones(phone,contact_id) VALUES($1,$2) RETURNING *', [args.phone,args.contact_id])
         .then(data => {
             return data
         })
@@ -84,4 +84,63 @@ async function createContact(args) {
     console.log("data",data)
     return data
 }
-module.exports = {getPhone, getPhones, createPhone, getContact, getContacts, createContact}
+async function editPhone(args) {
+    let data = await db.one('UPDATE phones SET phone = $1 WHERE id = $2 RETURNING *', [args.phone,args.id])
+        .then(data => {
+            return data
+        })
+    console.log(data)
+    return data
+}
+
+async function editContact(args) {
+    let data = await db.one('UPDATE contacts SET name = $1 WHERE id = $2 RETURNING *', [args.name,args.id])
+        .then(data => {
+            return data
+        })
+    console.log(data)
+    return data
+}
+async function deleteContact(args) {
+    let data = await db.one('DELETE FROM contacts WHERE id = $1 RETURNING *', [args.id])
+        .then(data => {
+            return "deleted"
+        })
+    console.log(data)
+    return data
+}
+async function deletePhone(args) {
+    let data = await db.one('DELETE FROM phones WHERE id = $1 RETURNING *', [args.id])
+        .then(data => {
+            return "deleted"
+        })
+    console.log(data)
+    return data
+}
+async function searchContacts(args) {
+    let data = await db.many(`SELECT DISTINCT contacts.id,contacts.name 
+            FROM contacts
+             LEFT JOIN phones ON contacts.id = phones.contact_id
+            WHERE contacts.name LIKE $1
+            OR phones.phone LIKE $1
+            `,
+        '%'+args.search+'%').then(data => {
+        console.log("data", data);
+        return data
+    }).catch(err=>{})
+    return data
+}
+
+module.exports = {
+    getPhone,
+    getPhones,
+    createPhone,
+    getContact,
+    getContacts,
+    createContact,
+    editPhone,
+    editContact,
+    deleteContact,
+    deletePhone,
+    searchContacts
+}
